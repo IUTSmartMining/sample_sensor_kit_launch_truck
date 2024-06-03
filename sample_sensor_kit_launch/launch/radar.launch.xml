@@ -10,6 +10,9 @@
     <arg name="detected_objects" default="/sensing/radar/detected_objects"/>
     <arg name="tracked_objects" default="/sensing/radar/tracked_objects"/>
 
+    <arg name="noise_objects" default="/perception/radar/noise_objects"/>
+    <arg name="noise_filtered_objects" default="/perception/radar/noise_filtered_objects"/>
+
     <group if="$(var launch_driver)">
         <push-ros-namespace namespace="radar"/>
 
@@ -33,6 +36,13 @@
             <arg name="output/radar_detected_objects" value="$(var detected_objects)"/>
             <arg name="output/radar_tracked_objects" value="$(var tracked_objects)"/>
             <arg name="param_path" value="$(find-pkg-share radar_tracks_msgs_converter)/config/radar_tracks_msgs_converter.param.yaml"/>
+        </include>
+
+        <include file="$(find-pkg-share radar_crossing_objects_noise_filter)/launch/radar_crossing_objects_noise_filter.launch.xml">
+            <arg name="input/objects" value="$(var detected_objects)"/>
+            <arg name="output/noise_objects" value="$(var noise_objects)"/>
+            <arg name="output/filtered_objects" value="$(var noise_filtered_objects)"/>
+            <arg name="param_path" value="$(find-pkg-share radar_crossing_objects_noise_filter)/config/radar_crossing_objects_noise_filter.param.yaml"/>
         </include>
     </group>
 
