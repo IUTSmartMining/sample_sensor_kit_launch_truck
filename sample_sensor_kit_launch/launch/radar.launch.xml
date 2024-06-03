@@ -14,6 +14,8 @@
     <arg name="noise_filtered_objects" default="/perception/radar/noise_filtered_objects"/>
     <arg name="low_speed_objects" default="/perception/radar/low_speed_objects"/>
     <arg name="high_speed_objects" default="/perception/radar/high_speed_objects"/>
+    <arg name="far_high_speed_objects" default="/perception/radar/far_high_speed_objects"/>
+    <arg name="near_high_speed_objects" default="/perception/radar/near_high_speed_objects"/>
 
     <group if="$(var launch_driver)">
         <push-ros-namespace namespace="radar"/>
@@ -52,6 +54,13 @@
             <arg name="output/low_speed_objects" value="$(var low_speed_objects)"/>
             <arg name="output/high_speed_objects" value="$(var high_speed_objects)"/>
             <arg name="param_path" value="$(find-pkg-share object_velocity_splitter)/config/object_velocity_splitter.param.yaml"/>
+        </include>
+
+        <include file="$(find-pkg-share object_range_splitter)/launch/object_range_splitter.launch.xml">
+            <arg name="input/object" value="$(var high_speed_objects)"/>
+            <arg name="output/long_range_object" value="$(var far_high_speed_objects)"/>
+            <arg name="output/short_range_object" value="$(var near_high_speed_objects)"/>
+            <arg name="param_path" value="$(find-pkg-share object_range_splitter)/config/object_range_splitter.param.yaml"/>
         </include>
     </group>
 
