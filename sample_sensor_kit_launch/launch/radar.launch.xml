@@ -1,0 +1,39 @@
+<launch>
+    <arg name="launch_driver" default="true"/>
+    <arg name="ip_address" default="192.168.100.95" />
+    <arg name="port" default="50000" />
+    <arg name="can_tx" default="/sensing/radar/can_tx"/>
+    <arg name="objects_raw" default="/sensing/radar/objects_raw"/>
+    <arg name="scan" default="/sensing/radar/scan"/>
+    <arg name="noise_tracks" default="/sensing/radar/noise_tracks"/>
+    <arg name="filtered_objects" default="/sensing/radar/filtered_objects"/>
+    <arg name="detected_objects" default="/sensing/radar/detected_objects"/>
+    <arg name="tracked_objects" default="/sensing/radar/tracked_objects"/>
+
+    <group if="$(var launch_driver)">
+        <push-ros-namespace namespace="radar"/>
+
+        <include file="$(find-pkg-share pe_ars408_ros)/launch/continental_ars408.launch.xml">
+            <arg name="ip_address" value="$(var ip_address)"/>
+            <arg name="port" value="$(var port)"/>
+            <arg name="input/frame" value="$(var can_tx)"/>
+            <arg name="output/objects" value="$(var objects_raw)"/>
+            <arg name="output/scan" value="$(var scan)"/>
+        </include>
+
+        <include file="$(find-pkg-share radar_tracks_noise_filter)/launch/radar_tracks_noise_filter.launch.xml">
+            <arg name="input/tracks" value="$(var objects_raw)"/>
+            <arg name="output/noise_tracks" value="$(var noise_tracks)"/>
+            <arg name="output/filtered_tracks" value="$(var filtered_objects)"/>
+            <arg name="param_path" value="$(find-pkg-share radar_tracks_noise_filter)/config/radar_tracks_noise_filter.param.yaml"/>
+        </include>
+
+        <include file="$(find-pkg-share radar_tracks_msgs_converter)/launch/radar_tracks_msgs_converter.launch.xml">
+            <arg name="input/radar_objects" value="$(var filtered_objects)"/>
+            <arg name="output/radar_detected_objects" value="$(var detected_objects)"/>
+            <arg name="output/radar_tracked_objects" value="$(var tracked_objects)"/>
+            <arg name="param_path" value="$(find-pkg-share radar_tracks_msgs_converter)/config/radar_tracks_msgs_converter.param.yaml"/>
+        </include>
+    </group>
+
+</launch>
