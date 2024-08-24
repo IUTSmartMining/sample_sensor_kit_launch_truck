@@ -1,26 +1,28 @@
 <launch>
   <arg name="launch_driver" default="true"/>
-  <arg name="camera_type" default="left"/>
+  <arg name="camera_type" default="front"/>
+  <arg name="rtsp_url" default="rtsp://admin:Madan1401@192.168.100.62:554/streaming/channels/101"/>
+  <arg name="image_raw0" default="/sensing/camera/camera0/image_rect_color" description="image raw topic name"/>
 
   <group>
     <push-ros-namespace namespace="camera"/>
     <group>
-      <push-ros-namespace namespace="traffic_light"/>
+      <push-ros-namespace namespace="camera0"/>
+      <include file="$(find-pkg-share common_sensor_launch)/launch/image_publisher_file.launch.py">
+        <arg name="rtsp_url" value="$(var rtsp_url)"/>
+        <arg name="frame_id" value="camera0/camera_link"/>
+      </include>
 
-      <!-- (usb_cam_node is assumed to have launched on logging PC) -->
-      <node pkg="topic_tools" exec="relay" name="tl_camera_info_relay" output="log">
-        <param name="input_topic" value="$(var camera_type)/camera_info"/>
-        <param name="output_topic" value="camera_info"/>
-        <param name="type" value="sensor_msgs/msg/CameraInfo"/>
-        <param name="reliability" value="best_effort"/>
-      </node>
-
-      <node pkg="topic_tools" exec="relay" name="tl_compressed_image_relay" output="log">
-        <param name="input_topic" value="$(var camera_type)/image_raw/compressed"/>
-        <param name="output_topic" value="image_raw/compressed"/>
-        <param name="type" value="sensor_msgs/msg/CompressedImage"/>
-        <param name="reliability" value="best_effort"/>
-      </node>
+      <include file="$(find-pkg-share image_proc)/launch/image_proc.launch.py"/>
     </group>
   </group>
+
+  <group>
+    <push-ros-namespace namespace="/perception/object_recognition/detection"/>
+    <include file="$(find-pkg-share autoware_tensorrt_yolox)/launch/multiple_yolox.launch.xml">
+      <arg name="image_raw0" value="$(var image_raw0)"/>
+      <arg name="image_number" value="$(var image_number)"/>
+    </include>
+  </group>
+  
 </launch>

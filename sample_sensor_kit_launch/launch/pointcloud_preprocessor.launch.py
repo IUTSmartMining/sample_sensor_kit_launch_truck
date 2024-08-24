@@ -25,33 +25,47 @@ from launch_ros.descriptions import ComposableNode
 
 
 def launch_setup(context, *args, **kwargs):
-    # set concat filter as a component
-    concat_component = ComposableNode(
+    input_topics = [
+        "/sensing/lidar/top/pointcloud_before_sync",
+        "/sensing/lidar/top/pointcloud_before_sync",
+    ]
+
+    time_sync_component = ComposableNode(
         package="autoware_pointcloud_preprocessor",
-        plugin="autoware::pointcloud_preprocessor::PointCloudConcatenateDataSynchronizerComponent",
-        name="concatenate_data",
+        plugin="autoware::pointcloud_preprocessor::PointCloudDataSynchronizerComponent",
+        name="synchronizer_filter",
         remappings=[
             ("~/input/twist", "/sensing/vehicle_velocity_converter/twist_with_covariance"),
             ("output", "concatenated/pointcloud"),
         ],
         parameters=[
             {
-                "input_topics": [
-                    "/sensing/lidar/top/pointcloud_before_sync",
-                    "/sensing/lidar/left/pointcloud_before_sync",
-                    "/sensing/lidar/right/pointcloud_before_sync",
-                ],
+                "input_topics": input_topics,
                 "output_frame": LaunchConfiguration("base_frame"),
                 "input_twist_topic_type": "twist",
-                "publish_synchronized_pointcloud": True,
+                "approximate_sync": LaunchConfiguration("approximate_sync"),
             }
         ],
-        extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
+
+    concat_component = ComposableNode(
+        package="autoware_pointcloud_preprocessor",
+        plugin="autoware::pointcloud_preprocessor::PointCloudConcatenationComponent",
+        name="concatenate_filter",
+        remappings=[("output", "concatenated/pointcloud")],
+        parameters=[
+            {
+                "input_topics": input_topics,
+                "output_frame": LaunchConfiguration("base_frame"),
+                "approximate_sync": LaunchConfiguration("approximate_sync"),
+            }
+        ],
+    )
+    concat_components = [time_sync_component, concat_component]
 
     # load concat or passthrough filter
     concat_loader = LoadComposableNodes(
-        composable_node_descriptions=[concat_component],
+        composable_node_descriptions=concat_components,
         target_container=LaunchConfiguration("pointcloud_container_name"),
         condition=IfCondition(LaunchConfiguration("use_concat_filter")),
     )

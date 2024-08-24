@@ -1,0 +1,13 @@
+<launch>
+  <arg name="launch_driver" default="true"/>
+
+  <group>
+    <push-ros-namespace namespace="autopilot"/>
+    <node pkg="autopilot_driver" name="autopilot_driver_node" exec="apu_node" if="$(var launch_driver)">
+        <remap from="/autopilot/imu" to="/sensing/imu/imu_raw"/>
+    </node>
+
+    <node pkg="autopilot_driver" name="autopilot_sensory_node" exec="apu_sensory" if="$(var launch_driver)">
+    </node>
+  </group>
+</launch>
