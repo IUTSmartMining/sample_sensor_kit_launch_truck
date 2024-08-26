@@ -1,7 +1,7 @@
 <launch>
   <arg name="launch_driver" default="true"/>
-  <arg name="ip_address" default="192.168.100.12"/>
-  <arg name="port" default="50003"/>
+  <arg name="ip_address"/>
+  <arg name="port"/>
 
   <group>
     <push-ros-namespace namespace="gnss"/>
@@ -13,7 +13,7 @@
     <!-- Raymand Driver -->
     <group if="$(var launch_driver)">
       <include file="$(find-pkg-share gps_network_pkg)/launch/gps_network_pkg.launch.xml">
-        <remap from="~/fix" to="$(var navsatfix_topic_name)"/>
+        <arg name="~/fix" value="$(var navsatfix_topic_name)"/>
         <arg name="ip_address" value="$(var ip_address)"/>
         <arg name="port" value="$(var port)"/>
       </include>

@@ -1,7 +1,7 @@
 <launch>
   <arg name="launch_driver" default="true"/>
   <arg name="camera_type" default="front"/>
-  <arg name="rtsp_url" default="rtsp://admin:Madan1401@192.168.100.62:554/streaming/channels/101"/>
+  <arg name="rtsp_url"/>
   <arg name="image_raw0" default="/sensing/camera/camera0/image_rect_color" description="image raw topic name"/>
 
   <group>

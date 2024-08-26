@@ -4,24 +4,37 @@
   <arg name="pointcloud_container_name" default="pointcloud_container"/>
   <arg name="vehicle_id" default="$(env VEHICLE_ID default)"/>
 
+  <!-- Network parameters -->
+  <arg name="lidar_ip" default="192.168.100.9"/> <!-- HOST IP -->
+  <arg name="camera_rtsp" default="rtsp://admin:Madan1401@192.168.100.47:554/streaming/channels/101"/>
+  <arg name="radar_ip" default="192.168.200.9"/> <!-- HOST IP -->
+  <arg name="radar_port_send" default="50000"/>
+  <arg name="radar_port_recv" default="50001"/>
+  <arg name="gps_ip" default="192.168.150.12"/>
+  <arg name="gps_port" default="50003"/>
+
   <group>
     <!-- LiDAR Driver -->
     <include file="$(find-pkg-share sample_sensor_kit_launch)/launch/lidar.launch.xml">
       <arg name="launch_driver" value="$(var launch_driver)"/>
       <arg name="vehicle_mirror_param_file" value="$(var vehicle_mirror_param_file)"/>
       <arg name="pointcloud_container_name" value="$(var pointcloud_container_name)"/>
+      <arg name="host_ip" value="$(var lidar_ip)"/>
     </include>
 
     <!-- Camera Driver -->
     <include file="$(find-pkg-share sample_sensor_kit_launch)/launch/camera.launch.xml">
       <arg name="launch_driver" value="$(var launch_driver)" />
       <arg name="camera_type" value="front"/>
-      <arg name="rtsp_url" value="rtsp://admin:Madan1401@192.168.100.47:554/streaming/channels/101"/>
+      <arg name="rtsp_url" value="$(var camera_rtsp)"/>
     </include>
 
     <!-- Radar Driver -->
     <include file="$(find-pkg-share sample_sensor_kit_launch)/launch/radar.launch.xml">
       <arg name="launch_driver" value="$(var launch_driver)"/>
+      <arg name="ip_address" value="$(var radar_ip)"/>
+      <arg name="port_send" value="$(var radar_port_send)"/>
+      <arg name="port_receive" value="$(var radar_port_recv)"/>
     </include>
 
     <!-- Autopilot Driver -->
@@ -38,8 +51,8 @@
     <!-- GNSS Driver -->
     <include file="$(find-pkg-share sample_sensor_kit_launch)/launch/gnss.launch.xml">
       <arg name="launch_driver" value="$(var launch_driver)"/>
-      <arg name="ip_address" value="192.168.100.12"/>
-      <arg name="port" value="50003"/>
+      <arg name="ip_address" value="$(var gps_ip)"/>
+      <arg name="port" value="$(var gps_port)"/>
     </include>
 
     <!-- Vehicle Velocity Converter  -->
