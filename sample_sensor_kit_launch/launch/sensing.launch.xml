@@ -13,16 +13,16 @@
     </include>
 
     <!-- Camera Driver -->
-    <!-- <include file="$(find-pkg-share sample_sensor_kit_launch)/launch/camera.launch.xml">
+    <include file="$(find-pkg-share sample_sensor_kit_launch)/launch/camera.launch.xml">
       <arg name="launch_driver" value="$(var launch_driver)" />
       <arg name="camera_type" value="front"/>
-      <arg name="rtsp_url" value="rtsp://admin:Madan1401@192.168.100.62:554/streaming/channels/101"/>
-    </include> -->
+      <arg name="rtsp_url" value="rtsp://admin:Madan1401@192.168.100.47:554/streaming/channels/101"/>
+    </include>
 
     <!-- Radar Driver -->
-    <!-- <include file="$(find-pkg-share sample_sensor_kit_launch)/launch/radar.launch.xml">
+    <include file="$(find-pkg-share sample_sensor_kit_launch)/launch/radar.launch.xml">
       <arg name="launch_driver" value="$(var launch_driver)"/>
-    </include> -->
+    </include>
 
     <!-- Autopilot Driver -->
     <include file="$(find-pkg-share sample_sensor_kit_launch)/launch/autopilot.launch.xml">
@@ -38,6 +38,8 @@
     <!-- GNSS Driver -->
     <include file="$(find-pkg-share sample_sensor_kit_launch)/launch/gnss.launch.xml">
       <arg name="launch_driver" value="$(var launch_driver)"/>
+      <arg name="ip_address" value="192.168.100.12"/>
+      <arg name="port" value="50003"/>
     </include>
 
     <!-- Vehicle Velocity Converter  -->

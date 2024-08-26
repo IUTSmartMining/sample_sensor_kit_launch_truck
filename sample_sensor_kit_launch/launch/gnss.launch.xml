@@ -1,6 +1,7 @@
 <launch>
   <arg name="launch_driver" default="true"/>
-  <arg name="gnss_receiver" default="ublox" description="ublox(default) or septentrio"/>
+  <arg name="ip_address" default="192.168.100.12"/>
+  <arg name="port" default="50003"/>
 
   <group>
     <push-ros-namespace namespace="gnss"/>
@@ -10,16 +11,13 @@
     <let name="orientation_topic_name" value="/autoware_orientation"/>
 
     <!-- Raymand Driver -->
-    <group>
-      <node pkg="gps_network_pkg" name="raymand_gnss_node" exec="gnss_node" if="$(var launch_driver)" respawn="true" respawn_delay="1.0">
+    <group if="$(var launch_driver)">
+      <include file="$(find-pkg-share gps_network_pkg)/launch/gps_network_pkg.launch.xml">
         <remap from="~/fix" to="$(var navsatfix_topic_name)"/>
-      </node>
+        <arg name="ip_address" value="$(var ip_address)"/>
+        <arg name="port" value="$(var port)"/>
+      </include>
     </group>
-
-    <!-- <group>
-      <node pkg="gps_network_pkg" name="odometry" exec="odometry_node" if="$(var launch_driver)" respawn="true" respawn_delay="1.0">
-      </node>
-    </group> -->
 
     <!-- NavSatFix to MGRS Pose -->
     <include file="$(find-pkg-share gnss_poser)/launch/gnss_poser.launch.xml">
