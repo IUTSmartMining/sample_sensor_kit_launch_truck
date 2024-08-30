@@ -20,6 +20,8 @@ def generate_launch_description():
             executable='image_publisher_node',
             name='image_publisher',
             output='screen',
+            respawn=True,
+            respawn_delay=0.1,
             arguments=[rtsp_url],
             parameters=[
                 {'use_sim_time': use_sim_time},
