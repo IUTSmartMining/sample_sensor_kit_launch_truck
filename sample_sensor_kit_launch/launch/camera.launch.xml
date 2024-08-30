@@ -13,7 +13,7 @@
         <arg name="frame_id" value="camera0/camera_link"/>
       </include>
 
-      <include file="$(find-pkg-share image_proc)/launch/image_proc.launch.py"/>
+      <include file="$(find-pkg-share common_sensor_launch)/launch/image_proc.launch.py"/>
     </group>
   </group>
 
