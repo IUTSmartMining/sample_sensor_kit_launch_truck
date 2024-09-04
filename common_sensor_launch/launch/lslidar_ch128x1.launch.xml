@@ -24,8 +24,15 @@
 
   <group>
     <node pkg="lslidar_driver" name="lslidar" exec="lslidar_driver_node" >
-      <remap from="lslidar_point_cloud" to="pointcloud_raw" />
-      <param name="frame_id" value="$(var sensor_frame)" />
+      <remap from="lslidar_point_cloud" to="pointcloud_raw"/>
+      <param name="device_ip" value="192.168.100.11"/>
+      <param name="lidar_type" value="ch128x1"/>
+      <param name="group_ip" value="224.1.1.1"/>
+      <param name="frame_id" value="$(var sensor_frame)"/>
+      <param name="min_range" value="0.15"/>
+      <param name="max_range" value="250.0"/>
+      <param name="packet_rate" value="6737.0"/>
+      <param name="channel_num" value="8"/>
     </node>
   </group>
 
