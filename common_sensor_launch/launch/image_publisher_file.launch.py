@@ -7,6 +7,7 @@ def generate_launch_description():
     rtsp_url = LaunchConfiguration('rtsp_url')
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
     frame_id = LaunchConfiguration('frame_id')
+    retry = LaunchConfiguration('retry', default='true')
 
     return LaunchDescription([
         
@@ -14,6 +15,8 @@ def generate_launch_description():
         DeclareLaunchArgument('use_sim_time', default_value='false',
                               description='Use simulation time if true'),
         DeclareLaunchArgument('frame_id', description='Camera frame ID'),
+        DeclareLaunchArgument('retry', default_value='true',
+                              description='Retry after timeout'),
 
         launch_ros.actions.Node(
             package='image_publisher',
@@ -25,6 +28,7 @@ def generate_launch_description():
             arguments=[rtsp_url],
             parameters=[
                 {'use_sim_time': use_sim_time},
-                {'frame_id': frame_id}
+                {'frame_id': frame_id},
+                {'retry': retry},
             ]),
     ])
