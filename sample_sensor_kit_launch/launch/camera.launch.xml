@@ -10,6 +10,7 @@
       <push-ros-namespace namespace="camera0"/>
       <include file="$(find-pkg-share common_sensor_launch)/launch/image_publisher_file.launch.py">
         <arg name="rtsp_url" value="$(var rtsp_url)"/>
+        <arg name="camera_info_url" value="file://$(find-pkg-share common_sensor_launch)/config/camera0_info.yaml"/>
         <arg name="frame_id" value="camera0/camera_link"/>
       </include>
 

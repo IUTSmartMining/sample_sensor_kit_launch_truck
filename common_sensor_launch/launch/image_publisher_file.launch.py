@@ -5,6 +5,7 @@ import launch_ros.actions
 
 def generate_launch_description():
     rtsp_url = LaunchConfiguration('rtsp_url')
+    camera_info_url = LaunchConfiguration('camera_info_url')
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
     frame_id = LaunchConfiguration('frame_id')
     retry = LaunchConfiguration('retry', default='true')
@@ -12,6 +13,7 @@ def generate_launch_description():
     return LaunchDescription([
         
         DeclareLaunchArgument('rtsp_url', description='RTSP URL to the camera'),
+        DeclareLaunchArgument('camera_info_url', description='URL to the camera info file'),
         DeclareLaunchArgument('use_sim_time', default_value='false',
                               description='Use simulation time if true'),
         DeclareLaunchArgument('frame_id', description='Camera frame ID'),
@@ -27,6 +29,7 @@ def generate_launch_description():
             respawn_delay=0.1,
             arguments=[rtsp_url],
             parameters=[
+                {'camera_info_url': camera_info_url},
                 {'use_sim_time': use_sim_time},
                 {'frame_id': frame_id},
                 {'retry': retry},
