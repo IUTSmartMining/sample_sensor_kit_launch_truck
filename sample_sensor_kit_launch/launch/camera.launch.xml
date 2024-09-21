@@ -2,9 +2,9 @@
   <arg name="launch_driver" default="true"/>
   <arg name="camera_type" default="front"/>
   <arg name="rtsp_url"/>
-  <arg name="image_raw0" default="/sensing/camera/camera0/image_rect_color" description="image raw topic name"/>
+  <arg name="image_raw0" default="camera/camera0/image_rect_color" description="image raw topic name"/>
 
-  <group>
+  <!-- <group>
     <push-ros-namespace namespace="camera"/>
     <group>
       <push-ros-namespace namespace="camera0"/>
@@ -16,6 +16,17 @@
 
       <include file="$(find-pkg-share common_sensor_launch)/launch/image_proc.launch.py"/>
     </group>
+  </group> -->
+
+  <group>
+    <push-ros-namespace namespace="camera"/>
+    <group>
+      <push-ros-namespace namespace="camera0"/>
+      <include file="$(find-pkg-share common_sensor_launch)/launch/gstreamer_image_pub.launch.py">
+        <arg name="camera_name" value="camera0"/>
+        <arg name="rtsp_url" value="$(var rtsp_url)"/>
+      </include>
+    </group>
   </group>
 
   <group>
@@ -23,6 +34,7 @@
     <include file="$(find-pkg-share autoware_tensorrt_yolox)/launch/multiple_yolox.launch.xml">
       <arg name="image_raw0" value="$(var image_raw0)"/>
       <arg name="image_number" value="$(var image_number)"/>
+      <arg name="use_decompress" value="false"/>
     </include>
   </group>
   
