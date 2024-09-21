@@ -3,7 +3,7 @@
 
   <group>
     <push-ros-namespace namespace="autopilot"/>
-    # check  <include file="$(find-pkg-share autopilot_driver)/launch/autopilot_driver.launch.py">  if it doesnt work.
+    <!-- check  <include file="$(find-pkg-share autopilot_driver)/launch/autopilot_driver.launch.py">  if it doesnt work. -->
     <include file="$(find-pkg-share autopilot_driver)/autopilot_driver.launch.py">
     </include>
 
