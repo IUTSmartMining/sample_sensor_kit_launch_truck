@@ -6,7 +6,7 @@
 
   <!-- Network parameters -->
   <arg name="lidar_ip" default="192.168.100.9"/> <!-- HOST IP -->
-  <arg name="camera_rtsp" default="rtsp://admin:Madan1401@192.168.100.47:554/streaming/channels/101"/>
+  <arg name="camera_rtsp" default="rtsp://admin:Madan1401@192.168.100.47"/>
   <arg name="radar_ip" default="192.168.200.9"/> <!-- HOST IP -->
   <arg name="radar_port_send" default="50000"/>
   <arg name="radar_port_recv" default="50001"/>
