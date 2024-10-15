@@ -15,7 +15,7 @@
       <include file="$(find-pkg-share common_sensor_launch)/launch/lslidar_ch128x1.launch.xml">
         <arg name="max_range" value="250.0"/>
         <arg name="sensor_frame" value="lslidar_top"/>
-        <arg name="sensor_ip" value="192.168.100.11"/>
+        <arg name="sensor_ip" value="192.168.101.11"/>
         <arg name="host_ip" value="$(var host_ip)"/>
         <arg name="msop_port" value="2368"/>
         <arg name="difop_port" value="2369"/>

@@ -174,7 +174,7 @@ def generate_launch_description():
     add_launch_arg("msop_port", "2368", "msop port number")
     add_launch_arg("launch_driver", "True", "do launch driver")
     add_launch_arg("setup_sensor", "True", "configure sensor")
-    add_launch_arg("sensor_ip", "192.168.100.11", "device ip address")
+    add_launch_arg("sensor_ip", "192.168.101.11", "device ip address")
     add_launch_arg("host_ip", "255.255.255.0", "host ip address")
     add_launch_arg("scan_phase", "0.0")
     add_launch_arg("base_frame", "base_link", "base frame id")
