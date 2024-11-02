@@ -29,6 +29,8 @@ def launch_setup(context):
                     {'camera_info_url': f'file://{camera_info_url}'},
                     {'frame_id': frame_id},
                     {'gscam_config': gscam_config},
+                    {'sync_sink': False},
+                    {'preroll': True},
                 ],
                 remappings=[
                     ('image_raw', 'image_rect_color'),
