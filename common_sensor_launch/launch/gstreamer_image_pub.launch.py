@@ -12,7 +12,7 @@ def launch_setup(context):
     camera_info_url = Path(get_package_share_directory('common_sensor_launch')) / 'config' / f'{camera_name.perform(context)}_info.yaml'
     frame_id = f'{camera_name.perform(context)}/camera_link'
     rtsp_url = LaunchConfiguration('rtsp_url')
-    gscam_config = f'rtspsrc location={rtsp_url.perform(context)} latency=100 ! queue ! rtph265depay ! h265parse ! avdec_h265 ! videoconvert ! videoscale'
+    gscam_config = f'rtspsrc location={rtsp_url.perform(context)} latency=0 ! rtph265depay ! h265parse ! avdec_h265 ! videoconvert ! videoscale'
     
     container = ComposableNodeContainer(
         name='gscam_container',
