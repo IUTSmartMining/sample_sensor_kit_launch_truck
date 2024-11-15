@@ -4,8 +4,7 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import OpaqueFunction, DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
-from launch_ros.actions import ComposableNodeContainer
-from launch_ros.descriptions import ComposableNode
+from launch_ros.actions import Node
 
 def launch_setup(context):
     camera_name = LaunchConfiguration('camera_name')
@@ -13,39 +12,27 @@ def launch_setup(context):
     frame_id = f'{camera_name.perform(context)}/camera_link'
     rtsp_url = LaunchConfiguration('rtsp_url')
     gscam_config = f'rtspsrc location={rtsp_url.perform(context)} latency=0 ! rtph265depay ! h265parse ! avdec_h265 ! videoconvert ! videoscale'
-    
-    container = ComposableNodeContainer(
-        name='gscam_container',
-        namespace='',
-        package='rclcpp_components',
-        executable='component_container',
-        composable_node_descriptions=[
-            ComposableNode(
-                package='gscam2',
-                plugin='gscam2::GSCamNode',
-                name='gscam_publisher',
-                parameters=[
-                    {'camera_name': camera_name},
-                    {'camera_info_url': f'file://{camera_info_url}'},
-                    {'frame_id': frame_id},
-                    {'gscam_config': gscam_config},
-                    {'sync_sink': False},
-                    {'preroll': True},
-                ],
-                remappings=[
-                    ('image_raw', 'image_rect_color'),
-                ],
-                extra_arguments=[{
-                    'use_intra_process_comms': True,
-                }],
-            ),
-        ],
+
+    node = Node(
+        package='gscam2',
+        executable='gscam_main',
         output='screen',
+        name='gscam_publisher',
         respawn=True,
         respawn_delay=0.1,
+        parameters=[
+            {'camera_name': camera_name},
+            {'camera_info_url': f'file://{camera_info_url}'},
+            {'frame_id': frame_id},
+            {'gscam_config': gscam_config},
+            {'sync_sink': False},
+        ],
+        remappings=[
+            ('image_raw', 'image_rect_color'),
+        ],
     )
 
-    return [container]
+    return [node]
 
 def generate_launch_description():
     camera_name_arg = DeclareLaunchArgument('camera_name')
