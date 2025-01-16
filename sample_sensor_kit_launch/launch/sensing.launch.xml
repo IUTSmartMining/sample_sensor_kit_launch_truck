@@ -10,7 +10,7 @@
   <arg name="radar_ip" default="192.168.200.9"/> <!-- HOST IP -->
   <arg name="radar_port_send" default="50000"/>
   <arg name="radar_port_recv" default="50001"/>
-  <arg name="gps_ip" default="192.168.150.12"/>
+  <arg name="gps_ip" default="192.168.100.12"/>
   <arg name="gps_port" default="50003"/>
 
   <group>
