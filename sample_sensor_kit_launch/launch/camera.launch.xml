@@ -19,7 +19,7 @@
   </group> -->
 
   <group>
-    <push-ros-namespace namespace="camera"/>
+    <push-ros-namespace namespace="/sensing/camera"/>
     <group>
       <push-ros-namespace namespace="camera0"/>
       <include file="$(find-pkg-share common_sensor_launch)/launch/gstreamer_image_pub.launch.py">
